@@ -1,10 +1,11 @@
-PROJECT_NAME := "lightlypage"
+PROJECT_NAME := "app"
 PKG := "gitlab.com/marvincaspar/$(PROJECT_NAME)"
 MAIN_FILE := "cmd/server/main.go"
 PKG_LIST := $(shell go list ./... | grep -v /vendor/)
 GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
 # https://github.com/golangci/awesome-go-linters
 LINTERS := \
+	github.com/rakyll/gotest \
 	golang.org/x/lint/golint \
 	honnef.co/go/tools/cmd/staticcheck
 
@@ -48,11 +49,15 @@ coverhtml: ## Generate global code coverage report in HTML
 dep: ## Get dependencies
 	@go mod tidy
 	@go mod vendor
-	@go get -u github.com/rakyll/gotest
+	# Live reload utility for Go web servers
+	@go get -u github.com/codegangsta/gin
 
 testdep: ## Get dev dependencies
 	@go get -v $(LINTERS)
 
+run: ## Run the app with hot reloading using gin
+	HOST="localhost" gin --build cmd/server --port 8080 --appPort 3000 --bin ./bin/$(PROJECT_NAME)-gin run main.go
+	
 build: dep ## Build the binary file
 	@go build -i -v -o ./bin/$(PROJECT_NAME) ./$(MAIN_FILE)
 

@@ -1,14 +1,14 @@
 package rest
 
 import (
-	"log"
-
 	"github.com/gorilla/mux"
+	"github.com/marvincaspar/go-web-app-boilerplate/pkg/http/rest/middleware"
+	"github.com/marvincaspar/go-web-app-boilerplate/pkg/infra"
 )
 
 // Handler handles http rest requests
 type Handler struct {
-	logger *log.Logger
+	logger *infra.Logger
 	router *mux.Router
 }
 
@@ -19,16 +19,15 @@ type HTTPError struct {
 }
 
 // CreateHandler create a new http rest handler
-func CreateHandler(l *log.Logger) *Handler {
+func CreateHandler(l *infra.Logger) *Handler {
 	h := &Handler{
 		logger: l,
 		router: mux.NewRouter(),
 	}
-	// mw := middleware.CreateMiddleware(h.logger)
+	mw := middleware.CreateMiddleware(h.logger)
 
-	// h.router.Use(mw.JSONResponse)
-	// h.router.Use(mw.Logging)
-	// h.router.Use(middleware.CORS)
+	h.router.Use(mw.JSONResponse)
+	h.router.Use(mw.Logging)
 
 	return h
 }
