@@ -16,7 +16,7 @@ func (mw *Middleware) Logging(next http.Handler) http.Handler {
 
 			duration := time.Since(start)
 			durationInMs := duration.Nanoseconds() / 1000000
-			mw.logger.Log.WithFields(log.Fields{
+			mw.logger.WithFields(log.Fields{
 				"component":           "Middleware",
 				"method":              r.Method,
 				"url":                 r.URL.Path,

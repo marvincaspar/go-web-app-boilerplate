@@ -7,25 +7,11 @@ import (
 	"sync"
 
 	"github.com/marvincaspar/go-web-app-boilerplate/pkg/infra"
-	"github.com/sirupsen/logrus"
 )
 
 // LoggerMock creates a log mock
 func LoggerMock() *infra.Logger {
-	logger := logrus.New()
-
-	// Log as JSON instead of the default ASCII formatter.
-	logger.SetFormatter(&logrus.JSONFormatter{})
-
-	// Output to stdout instead of the default stderr
-	logger.SetOutput(os.Stdout)
-
-	// Only log the warning severity or above.
-	logger.SetLevel(logrus.InfoLevel)
-
-	return &infra.Logger{
-		Log: logger,
-	}
+	return infra.CreateLogger()
 }
 
 // LoggerWithOutputCapturingMock creates a log mock which can capture the log rsult
@@ -36,7 +22,7 @@ func LoggerWithOutputCapturingMock() (*infra.Logger, *os.File, *os.File) {
 	}
 
 	logger := LoggerMock()
-	logger.Log.SetOutput(writer)
+	logger.SetOutput(writer)
 
 	return logger, reader, writer
 }
