@@ -16,5 +16,5 @@ func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
 
 	// In the future we could report back on the status of our DB, or our cache
 	// (e.g. Redis) by performing a simple PING, and include them in the response.
-	io.WriteString(w, `{"alive": true}`)
+	_, _ = io.WriteString(w, `{"alive": true}`)
 }

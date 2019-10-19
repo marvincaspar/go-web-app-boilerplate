@@ -13,6 +13,15 @@ LINTERS := \
 
 all: build
 
+prepare:
+	@echo "Install pre-commit via Homebrew..."
+	brew install pre-commit
+
+	@echo "Initializing environment for git..."
+	pre-commit install -t pre-commit
+	pre-commit install -t pre-push
+	pre-commit install -t commit-msg
+
 init: dep testdep ## Download dependencies and add git hooks
 	find .git/hooks -type l -exec rm {} \;
 	find githooks -type f -exec ln -sf ../../{} .git/hooks/ \;
