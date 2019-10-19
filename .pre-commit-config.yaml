@@ -10,3 +10,10 @@ repos:
         stages: [commit]
       - id: golangci-lint
         stages: [commit]
+  - repo: https://github.com/salapao2136/go-web-app-boilerplate
+    rev: master
+    hooks:
+      - id: go-build
+        stages: [commit]
+      - id: go-vet
+        stages: [commit]
