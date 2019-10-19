@@ -1,0 +1,12 @@
+-   id: go-build
+    name: 'go-build'
+    entry: ./githooks/run-go-build.sh
+    files: '\.go$'
+    language: 'script'
+    description: "Runs `go build`, requires golang"
+-   id: go-vet
+    name: 'go vet'
+    entry: ./githooks/run-go-vet.sh
+    files: '\.go$'
+    language: 'script'
+    description: "Runs `go vet`, requires golang"

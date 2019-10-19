@@ -39,11 +39,11 @@ func CaptureLogOutput(reader *os.File, writer *os.File, f func()) string {
 	go func() {
 		var buf bytes.Buffer
 		wg.Done()
-		io.Copy(&buf, reader)
+		_, _ = io.Copy(&buf, reader)
 		out <- buf.String()
 	}()
 	wg.Wait()
 	f()
-	writer.Close()
+	_ = writer.Close()
 	return <-out
 }
