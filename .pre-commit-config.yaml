@@ -1,0 +1,19 @@
+repos:
+  - repo: git://github.com/dnephin/pre-commit-golang
+    rev: master
+    hooks:
+      - id: go-fmt
+        stages: [commit]
+      - id: go-lint
+        stages: [commit]
+      - id: go-imports
+        stages: [commit]
+      - id: golangci-lint
+        stages: [commit]
+  - repo: https://github.com/salapao2136/go-web-app-boilerplate
+    rev: master
+    hooks:
+      - id: go-build
+        stages: [commit]
+      - id: go-vet
+        stages: [commit]
