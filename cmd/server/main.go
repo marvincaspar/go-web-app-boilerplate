@@ -18,7 +18,12 @@ func main() {
 
 func run() error {
 	// init logger
-	logger := infra.CreateLogger()
+	// level 0 is a info level ,so debug level doesn't show
+	// debug level can show in level -1
+	logger, err := infra.CreateLogger(0)
+	if err != nil {
+		return err
+	}
 
 	// init storage
 

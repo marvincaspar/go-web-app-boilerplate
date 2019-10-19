@@ -20,6 +20,3 @@ The logging framework is [Logrus](https://github.com/sirupsen/logrus) and can be
 | /test | Additional external test apps and test data. |
 | /vendor | Application dependencies. |
 | /web | Web application specific components: static web assets, server side templates and SPAs. |
-
-
-test test
