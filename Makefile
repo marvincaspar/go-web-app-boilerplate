@@ -49,14 +49,12 @@ coverhtml: ## Generate global code coverage report in HTML
 dep: ## Get dependencies
 	@go mod tidy
 	@go mod vendor
-	# Live reload utility for Go web servers
-	@go get -u github.com/codegangsta/gin
 
 testdep: ## Get dev dependencies
 	@go get -v $(LINTERS)
 
-run: ## Run the app with hot reloading using gin
-	HOST="localhost" gin --build cmd/server --port 8080 --appPort 3000 --bin ./bin/$(PROJECT_NAME)-gin run main.go
+run:
+	./bin/$(PROJECT_NAME)
 	
 build: dep ## Build the binary file
 	@go build -i -v -o ./bin/$(PROJECT_NAME) ./$(MAIN_FILE)

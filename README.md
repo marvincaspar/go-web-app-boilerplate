@@ -6,7 +6,7 @@ Use `make init` to install githooks and download dependencies.
 
 The default http router is [gorilla mux](https://github.com/gorilla/mux).
 
-The logging framework is [Logrus](https://github.com/sirupsen/logrus) and can be replaced in `/pkg/infra/logger.go`.
+The logging framework is [Zap](https://github.com/uber-go/zap) and can be replaced in `/pkg/infra/logger.go`.
 
 ## Central folder structure
 
