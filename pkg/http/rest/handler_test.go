@@ -9,7 +9,7 @@ import (
 )
 
 func TestCreateHandler(t *testing.T) {
-	logger := test.LoggerMock()
+	logger, _ := test.LoggerMock()
 	handler := CreateHandler(logger)
 
 	expectedRouterType := reflect.TypeOf(mux.NewRouter())

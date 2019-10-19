@@ -3,16 +3,18 @@ package middleware
 import (
 	"net/http"
 	"net/http/httptest"
-	"strings"
+	"reflect"
 	"testing"
 
 	"github.com/marvincaspar/go-web-app-boilerplate/test"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 
 	"github.com/gorilla/mux"
 )
 
 func TestLoggingMiddleware(t *testing.T) {
-	logger, reader, writer := test.LoggerWithOutputCapturingMock()
+	logger, recorded := test.LoggerMock()
 
 	router := mux.NewRouter()
 	router.HandleFunc("/", test.HandlerMock).Methods("GET")
@@ -23,15 +25,21 @@ func TestLoggingMiddleware(t *testing.T) {
 
 	// Add the middleware again as function
 	router.Use(mw.Logging)
-	req, _ := http.NewRequest("GET", "/", nil)
+	req := httptest.NewRequest("GET", "/", nil)
+	router.ServeHTTP(rr, req)
 
-	logResult := test.CaptureLogOutput(reader, writer, func() {
-		router.ServeHTTP(rr, req)
-	})
+	expect := []zapcore.Field{
+		zap.String("component", "Middleware"),
+		zap.String("method", "GET"),
+		zap.String("url", "/"),
+		zap.Int("status", http.StatusOK),
+		zap.Int64("res[content-length]", 0),
+		zap.String("response-time", "0ms"),
+	}
 
-	expected := `"component":"Middleware","level":"info","method":"GET","msg":"Request logging","res[content-length]":0,"response-time":"0ms","status":200,"time":`
-	if !strings.Contains(logResult, expected) {
-		t.Errorf("request was not logged: got %v want %v",
-			logResult, expected)
+	for _, logs := range recorded.All() {
+		if !reflect.DeepEqual(expect, logs.Context) {
+			t.Errorf("request was not logged: got %v want %v", logs.Context, expect)
+		}
 	}
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func TestCreateMiddleware(t *testing.T) {
-	logger := test.LoggerMock()
+	logger, _ := test.LoggerMock()
 	mw := CreateMiddleware(logger)
 
 	expectedType := reflect.TypeOf(&Middleware{})
