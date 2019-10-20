@@ -16,12 +16,12 @@ do
   if [[ $? == 1 ]]; then
     PASS=false
   fi
-
-  go vet $FILE
-  if [[ $? != 0 ]]; then
-    PASS=false
-  fi
 done
+
+go vet ./...
+if [[ $? != 0 ]]; then
+  PASS=false
+fi
 
 if ! $PASS; then
   printf "COMMIT FAILED\n"
