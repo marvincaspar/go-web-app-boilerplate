@@ -17,28 +17,24 @@ init: dep testdep ## Download dependencies and add git hooks
 	find .git/hooks -type l -exec rm {} \;
 	find githooks -type f -exec ln -sf ../../{} .git/hooks/ \;
 
-lint: golint vet staticcheck ## Code checks
-
-golint: testdep ## Lint files
+lint: testdep ## Lint files
 	@golint -set_exit_status ${PKG_LIST}
 
 vet: testdep ## Checks correctness 
-	@go vet ./...
+	@go vet ${PKG_LIST}
 
 staticcheck: testdep ## Analyses code
-	staticcheck ./...
+	staticcheck ${PKG_LIST}
 
 test: ## Run unit tests
 	@go test -short ${PKG_LIST}
 
+test-coverage: ## Run tests with coverage
+	@go test -short -coverprofile cover.out -covermode=atomic ${PKG_LIST} 
+	@cat cover.out >> coverage.txt
+
 test-int: ## Run unit and integration tests
 	@go test -short -tags=integration ${PKG_LIST}
-
-race: dep ## Run data race detector
-	@go test -race -short ${PKG_LIST}
-
-msan: dep ## Run memory sanitizer
-	@go test -msan -short ${PKG_LIST}
 
 coverage: ## Generate global code coverage report
 	./scripts/coverage.sh;
@@ -57,7 +53,7 @@ run:
 	./bin/$(PROJECT_NAME)
 	
 build: dep ## Build the binary file
-	@go build -i -v -o ./bin/$(PROJECT_NAME) ./$(MAIN_FILE)
+	@go build -i -o ./bin/$(PROJECT_NAME) ./$(MAIN_FILE)
 
 clean: ## Remove previous build
 	@rm -f ./bin
